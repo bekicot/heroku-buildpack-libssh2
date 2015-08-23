@@ -23,18 +23,24 @@ echo "-----> Extracting LibSSh2 ${VERSION} binaries to ${BUILD_DIR}/vendor/libss
 mkdir -p $BUILD_DIR/vendor
 mkdir -p $BUILD_DIR/vendor/libssh2
 
-tar zxf $CACHE_DIR/$FILE_NAME -C $CACHE_DIR
-ls $CACHE_DIR
-ls $BUILD_DIR
-ls $CACHE_DIR/libssh2-libssh2-1.6.0
-ls -la
+echo 'removing gems'
 
-cd $CACHE_DIR/libssh2-libssh2-1.6.0
-cmake $CACHE_DIR/libssh2-libssh2-1.6.0 -DCMAKE_INSTALL_PREFIX=$BUILD_DIR/vendor/libssh2
-cmake --build $CACHE_DIR/libssh2-libssh2-1.6.0
+curl -Ls https://gist.github.com/nixpulvis/5042764/raw/7daa611e707f1884eb701551464bfd1dc9e7a953/gem-reset | ruby
 
-echo "-----> exporting PATH and LIBRARY_PATH"
-PROFILE_PATH="$BUILD_DIR/.profile.d/libssh2.sh"
-mkdir -p $(dirname $PROFILE_PATH)
+gem install bundler
 
-echo 'export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:vendor/libssh2/lib"' >> $PROFILE_PATH
+# tar zxf $CACHE_DIR/$FILE_NAME -C $CACHE_DIR
+# ls $CACHE_DIR
+# ls $BUILD_DIR
+# ls $CACHE_DIR/libssh2-libssh2-1.6.0
+# ls -la
+#
+# cd $CACHE_DIR/libssh2-libssh2-1.6.0
+# # cmake $CACHE_DIR/libssh2-libssh2-1.6.0 -DCMAKE_INSTALL_PREFIX=$BUILD_DIR/vendor/libssh2
+# # cmake --build $CACHE_DIR/libssh2-libssh2-1.6.0
+#
+# echo "-----> exporting PATH and LIBRARY_PATH"
+# PROFILE_PATH="$BUILD_DIR/.profile.d/libssh2.sh"
+# mkdir -p $(dirname $PROFILE_PATH)
+#
+# echo 'export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:vendor/libssh2/lib"' >> $PROFILE_PATH
