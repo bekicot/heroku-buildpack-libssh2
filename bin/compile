@@ -29,6 +29,7 @@ ls $BUILD_DIR
 ls $CACHE_DIR/libssh2-libssh2-1.6.0
 ls -la
 
+cd $CACHE_DIR/libssh2-libssh2-1.6.0
 cmake $CACHE_DIR/libssh2-libssh2-1.6.0 -DCMAKE_INSTALL_PREFIX=$BUILD_DIR/vendor/libssh2
 cmake --build $CACHE_DIR/libssh2-libssh2-1.6.0
 
