@@ -1,0 +1,39 @@
+#!/bin/sh
+
+set -e
+
+BUILD_DIR=$1
+CACHE_DIR=$2
+
+# config
+VERSION="1.6.0"
+# Buildpack URL
+ARCHIVE_NAME=libssh2-1.6.0
+FILE_NAME=${ARCHIVE_NAME}.tar.gz
+
+BUILDPACK_LIBSSL2_PACKAGE=https://github.com/libssh2/libssh2/archive/${FILE_NAME}
+
+mkdir -p $CACHE_DIR
+if ! [ -e $CACHE_DIR/$FILE_NAME ]; then
+  echo "-----> Fetching LibSSh2 ${VERSION} binaries at ${BUILDPACK_LIBSSL2_PACKAGE}"
+  curl $BUILDPACK_LIBSSL2_PACKAGE -L -s -o $CACHE_DIR/$FILE_NAME
+fi
+
+echo "-----> Extracting LibSSh2 ${VERSION} binaries to ${BUILD_DIR}/vendor/libssh2"
+mkdir -p $BUILD_DIR/vendor
+mkdir -p $BUILD_DIR/vendor/libssh2
+
+tar zxf $CACHE_DIR/$FILE_NAME -C $CACHE_DIR
+ls $CACHE_DIR
+ls $BUILD_DIR
+ls $CACHE_DIR/libssh2-libssh2-1.6.0
+ls -la
+
+cmake $CACHE_DIR/libssh2-libssh2-1.6.0 -DCMAKE_INSTALL_PREFIX=$BUILD_DIR/vendor/libssh2
+cmake --build $CACHE_DIR/libssh2-libssh2-1.6.0
+
+echo "-----> exporting PATH and LIBRARY_PATH"
+PROFILE_PATH="$BUILD_DIR/.profile.d/libssh2.sh"
+mkdir -p $(dirname $PROFILE_PATH)
+
+echo 'export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:vendor/libssh2/lib"' >> $PROFILE_PATH

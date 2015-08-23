@@ -1,0 +1,4 @@
+#!/bin/sh
+
+echo "LibSSL2"
+exit 0
